@@ -16,3 +16,5 @@ PROMPT='%F{blue}┌─(%f%F{#FF272A}%n@%m%f%(1j.%F{#FF272A} [%j]%f.)%F{blue})[%~
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
 clear
 neofetch
+
+eval $(thefuck --alias)
