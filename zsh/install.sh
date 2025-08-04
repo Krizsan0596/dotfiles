@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Install required packages using yay
-sudo yay -Syu --noconfirm zsh git curl bat neofetch python-pip
+yay -Syu --noconfirm zsh git curl bat neofetch python-pip
 
 # Install Oh My Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
