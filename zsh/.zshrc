@@ -10,7 +10,7 @@ zstyle :compinstall filename '/home/krizsan/.zshrc'
 autoload -Uz compinit promptinit
 compinit
 # End of lines added by compinstall
-plugins=(zsh-autosuggestions zsh-syntax-highlighting you-should-use)
+plugins=(zsh-autosuggestions zsh-syntax-highlighting you-should-use zsh-bat)
 promptinit
 PROMPT='%F{blue}┌─(%f%F{#FF272A}%n@%m%f%(1j.%F{#FF272A} [%j]%f.)%F{blue})[%~]%f
 %F{blue}└─$%f '
