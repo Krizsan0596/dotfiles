@@ -1,10 +1,13 @@
 #!/bin/bash
+dotfiles="$(pwd)"
+cd ~
 
 # Install yay
 sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
 
 # Install required packages using yay
-yay -Syu --noconfirm zsh git curl bat neofetch python-pip
+yay -Syu --noconfirm stow zsh git curl bat neofetch thefuck
+rm -rf yay
 
 # Install Oh My Zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
@@ -17,7 +20,7 @@ plugins=(
     "zsh-autosuggestions https://github.com/zsh-users/zsh-autosuggestions"
     "zsh-syntax-highlighting https://github.com/zsh-users/zsh-syntax-highlighting"
     "you-should-use https://github.com/MichaelAquilina/zsh-you-should-use"
-    "zsh-bat https://github.com/eth-p/zsh-bat"
+    "zsh-bat https://github.com/fdellwing/zsh-bat.git"
 )
 
 for plugin in "${plugins[@]}"; do
@@ -28,11 +31,8 @@ for plugin in "${plugins[@]}"; do
     fi
 done
 
-# Install thefuck
-pip install --user thefuck
-
 # Create a clean .zshrc configuration
-cat > ~/.zshrc << 'EOF'
+cat > "${dotfiles}/zsh/.zshrc" << 'EOF'
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -55,7 +55,7 @@ neofetch
 
 eval $(thefuck --alias)
 EOF
-
+stow -d "${dotfiles}" -t ~ zsh
 # Set zsh as default shell
 if [ "$SHELL" != "$(command -v zsh)" ]; then
     chsh -s "$(command -v zsh)"
