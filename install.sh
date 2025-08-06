@@ -1,6 +1,18 @@
 #!/bin/bash
 dotfiles="$(pwd)"
 cd ~
+echo "Setting up zsh, you will be asked for your sudo password a few times."
+#Does user want to install for root too?
+while true; do
+read -p "Would you like to setup zsh for the root account too? [Y/n] >" for_root
+if [ "${for_root^^}" = "Y" ] || [ "${for_root^^}" = "N" ]; then 
+	break
+else
+	echo "Invalid input!"
+fi
+done
+
+mv .zshrc .zshrc-backup
 
 # Install yay
 sudo pacman -S --needed git base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
@@ -31,34 +43,16 @@ for plugin in "${plugins[@]}"; do
     fi
 done
 
-# Create a clean .zshrc configuration
-cat > "${dotfiles}/zsh/.zshrc" << 'EOF'
-# Lines configured by zsh-newuser-install
-HISTFILE=~/.histfile
-HISTSIZE=1000
-SAVEHIST=1000
-bindkey -e
-# End of lines configured by zsh-newuser-install
-
-# Oh My Zsh configuration
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME=""
-plugins=(zsh-autosuggestions zsh-syntax-highlighting you-should-use zsh-bat)
-source "$ZSH/oh-my-zsh.sh"
-
-# Original customizations
-PROMPT='%F{blue}┌─(%f%F{#FF272A}%n@%m%f%(1j.%F{#FF272A} [%j]%f.)%F{blue})[%~]%f
-%F{blue}└─$%f '
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
-clear
-neofetch
-
-eval $(thefuck --alias)
-EOF
+#Use Stow to symlink dotfiles
 stow -d "${dotfiles}" -t ~ zsh
+
 # Set zsh as default shell
 if [ "$SHELL" != "$(command -v zsh)" ]; then
     chsh -s "$(command -v zsh)"
 fi
 
+#Setup zsh for root
+if [ "${for_root^^}" = "Y" ]; then
+	sudo cp "${dotfiles}/zsh/.zshrc" /root/.zshrc
+	sed -i $d /root/.zshrc && sed -i $d /root/.zshrc && sed -i $d /root/.zshrc
 echo "Installation complete! Please restart your terminal or run 'exec zsh'"

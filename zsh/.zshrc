@@ -15,7 +15,6 @@ source "$ZSH/oh-my-zsh.sh"
 PROMPT='%F{blue}┌─(%f%F{#FF272A}%n@%m%f%(1j.%F{#FF272A} [%j]%f.)%F{blue})[%~]%f
 %F{blue}└─$%f '
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+eval $(thefuck --alias)
 clear
 neofetch
-
-eval $(thefuck --alias)
